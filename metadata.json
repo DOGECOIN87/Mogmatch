@@ -1,0 +1,7 @@
+{
+  "name": "Copy of MogMatch",
+  "description": "The premier LooksMaxxing dating simulation. Swipe to Mog or get Mogged. Analyze your stats with AI.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
