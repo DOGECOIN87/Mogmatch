@@ -10,34 +10,51 @@ Use terminology like "mogging", "mewing", "hunter eyes", "canthal tilt", "it's o
 Create exaggerated, humorous characters who are obsessed with their facial structure and stats.
 `;
 
+const LOCAL_IMAGES = [
+  "1739520543232.png", "1739520759673.png", "1739520892533.png", 
+  "1739520951850.png", "1739521031759.png", "1739521119766.png", 
+  "1739521173529.png", "1739521191967.png", "1739521250332.png", 
+  "1739521263987.png", "1739521289159.png", "1739521350398.png", 
+  "1739521388295.png", "1739521431018.png", "1739521535114.png", 
+  "1739521631623.png", "46333.jpg", "58113.jpg", "70554.jpg", 
+  "71819.jpg", "81310.jpg", "82039.jpg", "IMG_5360.jpeg", 
+  "images (10).jpeg", "images (11).jpeg", "images (12).jpeg", 
+  "images (9).jpeg", "looksmax-mewing (1).png", "looksmax-mewing.png"
+];
+
+const getRandomLocalImage = () => {
+    const imageName = LOCAL_IMAGES[Math.floor(Math.random() * LOCAL_IMAGES.length)];
+    return `/images/${imageName}`;
+};
+
 const FALLBACK_PROFILES = [
   {
     name: "Giga Chad",
     age: 25,
     tagline: "I don't speak to people with negative canthal tilt.",
     bio: "Strictly mewing 24/7. If you breathe through your mouth, swipe left. Measuring my gonial angle daily.",
-    stats: { jawline: 10, canthalTilt: "Positive", mewingStreak: 5000, height: "6'8" },
+    stats: { jawline: 10, canthalTilt: "Positive", mewingStreak: 5000, height: "6'8"" },
   },
   {
     name: "Jordan B.",
     age: 23,
     tagline: "Just woke up like this.",
     bio: "Hunter eyes are a lifestyle, not a choice. My bone structure pays my rent.",
-    stats: { jawline: 9.8, canthalTilt: "Positive", mewingStreak: 1200, height: "6'2" },
+    stats: { jawline: 9.8, canthalTilt: "Positive", mewingStreak: 1200, height: "6'2"" },
   },
   {
     name: "Mewing Master",
     age: 19,
     tagline: "Tongue posture > bad posture.",
     bio: "I haven't spoken in 3 years to maintain suction hold. Text me only.",
-    stats: { jawline: 8.5, canthalTilt: "Neutral", mewingStreak: 900, height: "6'0" },
+    stats: { jawline: 8.5, canthalTilt: "Neutral", mewingStreak: 900, height: "6'0"" },
   },
   {
     name: "Chico L.",
     age: 22,
     tagline: "Mogging the entire industry.",
     bio: "It's all about the pheno. You either have it or you don't.",
-    stats: { jawline: 9.5, canthalTilt: "Positive", mewingStreak: 2000, height: "6'3" },
+    stats: { jawline: 9.5, canthalTilt: "Positive", mewingStreak: 2000, height: "6'3"" },
   }
 ];
 
@@ -54,8 +71,6 @@ const logError = (context: string, error: any) => {
 const getFallbackProfile = async (): Promise<Profile> => {
     const fallback = FALLBACK_PROFILES[Math.floor(Math.random() * FALLBACK_PROFILES.length)];
     const randomId = crypto.randomUUID();
-    // Use a specific seed to ensure the same fallback always gets a different image
-    const imageSeed = Math.floor(Math.random() * 1000); 
 
     // Simulate network latency for realism
     await new Promise(resolve => setTimeout(resolve, 800));
@@ -67,7 +82,7 @@ const getFallbackProfile = async (): Promise<Profile> => {
       tagline: fallback.tagline,
       bio: fallback.bio,
       stats: fallback.stats,
-      imageUrl: `https://picsum.photos/seed/${imageSeed}/400/600`
+      imageUrl: getRandomLocalImage()
     };
 };
 
@@ -111,7 +126,7 @@ export const generateLooksMaxxProfile = async (): Promise<Profile> => {
     return getFallbackProfile();
   }
 
-  let imageUrl = `https://picsum.photos/seed/${crypto.randomUUID()}/400/600`;
+  let imageUrl = getRandomLocalImage();
 
   try {
       const imageResponse = await ai.models.generateContent({
@@ -134,7 +149,7 @@ export const generateLooksMaxxProfile = async (): Promise<Profile> => {
       }
   } catch (error) {
       logError("Profile Image Gen", error);
-      // Swallow error, continue with picsum image
+      // Swallow error, continue with local image
   }
 
   return {
